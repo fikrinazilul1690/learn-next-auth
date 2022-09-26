@@ -1,3 +1,4 @@
+import axios from 'axios';
 import type { NextPage } from 'next';
 import { useSession, signIn } from 'next-auth/react';
 import Head from 'next/head';
@@ -17,6 +18,19 @@ const Home: NextPage = () => {
       ref.current = true;
     };
   }, [session]);
+
+  const fetchMember = async () => {
+    const response = await axios.get(
+      'http://localhost:3500/api/v1/members/9d151a8c-ae2c-4bd9-9ab2-c955fd54c8f8',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    console.log(response.data);
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -66,6 +80,8 @@ const Home: NextPage = () => {
           </a>
         </div>
       </main>
+
+      <button onClick={fetchMember}>Member</button>
 
       <footer className={styles.footer}>
         <a
